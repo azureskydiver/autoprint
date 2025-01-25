@@ -25,16 +25,18 @@ namespace autoPrint
 
         public Margins Margins { get; set; } = new Margins(50, 50, 50, 50);
 
+        public PrintingEngine(PrintingState printingStateIn)
+        {
+            printingState = printingStateIn;
+        }
+
         public void Print()
         {
-            printingState = PrintingState.Load();
-
             var document = new PrintDocument();
             document.DefaultPageSettings.Margins = Margins;
+            document.PrinterSettings.PrinterName = printingState.PrinterName;
             document.PrintPage += PrintPage;
             document.Print();
-
-            PrintingState.Save(printingState);
         }
 
         private void PrintPage(object sender, PrintPageEventArgs eventArgs)
